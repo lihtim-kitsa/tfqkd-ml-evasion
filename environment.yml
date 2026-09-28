@@ -1,0 +1,17 @@
+name: adaptive-oil-qkd
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - xgboost
+  - matplotlib
+  - seaborn
+  - jupyter
+  - pip
+  - pip:
+    - bayesian-optimization
