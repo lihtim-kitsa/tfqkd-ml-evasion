@@ -18,19 +18,21 @@ def plot_evasion_frontier(attack_type):
     
     plt.figure(figsize=(8, 6))
     
-    # We want to plot Detection Score (y-axis) vs Physical Impact (x-axis)
+    # We plot attack score against the phase-impact proxy.
     # The attacker wants to be bottom-right (high impact, low score)
     # So the Pareto front should be a curve.
     
-    plt.scatter(df['impact'], df['score'], color='firebrick', s=100, edgecolor='black', label='Pareto Optimal Attacks')
+    plt.scatter(df['impact'], df['score'], color='firebrick', s=100, edgecolor='black',
+                label='Evaluated non-dominated candidates')
     
     # Highlight the threshold
-    # Our XGBoost validation threshold was approx 0.05
-    plt.axhline(y=0.05, color='black', linestyle='--', label='ML Alarm Threshold (1% FPR)')
+    # Reported Split A threshold; regenerate when corrected validation policy is applied.
+    plt.axhline(y=0.038, color='black', linestyle='--',
+                label='Reported Split A XGBoost threshold (0.038)')
     
-    plt.title(f"Adaptive Evasion Frontier ({attack_type.upper()})")
-    plt.xlabel("Physical Impact (Peak-to-Peak Phase Deviation [rad])")
-    plt.ylabel("ML Detection Score (Attack Probability)")
+    plt.title(f"Evaluated Physical-Parameter Search ({attack_type.upper()})")
+    plt.xlabel("Phase-impact proxy (peak-to-peak phase deviation [rad])")
+    plt.ylabel("ML attack score")
     
     plt.ylim(-0.05, 1.05)
     if attack_type == 'fim':
@@ -48,20 +50,20 @@ def plot_evasion_frontier(attack_type):
 
 def plot_defense_comparison():
     # Data derived from our reproduction and drift tests
-    labels = ['Naive XGBoost', 'Naive Random Forest', 'Drift-Hardened XGBoost', 'Drift-Hardened RF', 'PINN (Zero-Shot)']
+    labels = ['XGBoost', 'Random Forest', 'Drift-hardened XGBoost', 'Drift-hardened RF']
     
     # False Positive Rates on Drift Data (%)
-    fpr_values = [99.90, 100.0, 2.48, 1.80, 0.0]
+    fpr_values = [100.0, 100.0, 2.48, 1.80]
     
     plt.figure(figsize=(10, 6))
     
-    colors = ['salmon', 'salmon', 'lightgreen', 'lightgreen', 'dodgerblue']
+    colors = ['salmon', 'salmon', 'lightgreen', 'lightgreen']
     bars = plt.bar(labels, fpr_values, color=colors, edgecolor='black')
     
-    plt.axhline(y=5.0, color='red', linestyle='--', label='Acceptable Max FPR (5%)')
+    plt.axhline(y=1.0, color='red', linestyle='--', label='Target FPR (1%)')
     
     plt.ylabel("False Positive Rate on Benign Drift (%)")
-    plt.title("Robustness to Operational Hardware Drift")
+    plt.title("Observed FPR on Unseen Simulated Parameter Drift")
     plt.xticks(rotation=45, ha='right')
     
     # Add values on top of bars
