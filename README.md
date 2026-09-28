@@ -181,10 +181,3 @@ impact measure independent of classifier features. The simplified TWIRL input ne
 a physically justified wavelength and locking-response model. Hardware validation
 and protocol-level QKD analysis are outside the present repository's validated
 results.
-
-## Paper
-
-The revised working manuscript is
-[Adaptive_Evasion_OIL_TFQKD_Revised.tex](Adaptive_Evasion_OIL_TFQKD_Revised.tex).
-It includes a checklist of remaining recalculations and evaluations. The older
-draft and supporting project notes are in reports/.
