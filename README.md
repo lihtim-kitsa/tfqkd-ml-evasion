@@ -16,8 +16,7 @@ Lang-Kobayashi phase model.
 > metrics. Nothing here establishes hardware robustness, attack feasibility, or QKD
 > security.
 
-The revised paper, [Adaptive_Evasion_OIL_TFQKD_Revised.tex](Adaptive_Evasion_OIL_TFQKD_Revised.tex),
-documents the current scope, corrections, and recalculation checklist. Its reported
+The revised paper documents the current scope, corrections, and recalculation checklist. Its reported
 classifier thresholds and threshold-dependent metrics remain provisional. The
 evasion-search scores are model outputs and do not depend on the alarm threshold.
 
