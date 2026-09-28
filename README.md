@@ -32,6 +32,8 @@ evasion-search scores are model outputs and do not depend on the alarm threshold
 | scripts/train_baselines.py | Fits Logistic Regression, XGBoost, and Random Forest models |
 | scripts/run_attack_search.py | Runs the 200-evaluation-per-family NSGA-II search |
 | scripts/test_physics_residual.py | Prints phase-residual values for selected conditions |
+| scripts/audit_benchmark.py | Counts distinct feature traces and checks group/trace overlap across saved splits |
+| scripts/audit_dynamics_resolution.py | Measures phase-residual sensitivity to output sampling on a fine-grid simulator run |
 | scripts/generate_paper_figures.py | Recreates figures from saved CSV outputs |
 | scripts/check_unhardened_drift.py | Drift-data diagnostic |
 | scripts/test_simulator.py | Simulator smoke check |
@@ -149,6 +151,39 @@ Run commands from the repository root.
 The generation and training scripts overwrite existing outputs at the same paths.
 Copy any results you need to preserve before rerunning them.
 
+## Fresh audit results
+
+Run the two non-destructive diagnostics from the repository root:
+
+    python scripts/audit_benchmark.py
+    python scripts/audit_dynamics_resolution.py --duration-ns 100 --step-ps 2
+
+The first writes `reports/benchmark_audit.md`. In the checked-in benchmark, each of
+the three nominal conditions has 50 group IDs but only one distinct feature trace.
+Split A has no shared IDs but does share three exact traces across train and test;
+Split C shares 150 nominal IDs and three exact traces. These results make the
+current saved train/test metrics unsuitable as independent-trajectory estimates.
+
+The second writes `results/tables/dynamics_resolution_audit.csv`. For the current
+deterministic equations and initialization, the phase-residual MSE over a 100 ns
+run is approximately 2.9e15 at 2 ps output, 9.3e17 at 10 ps, and 4.1e20 at 2 ns.
+The coarse trace also contains two phase increments larger than pi. This is a
+resolution-sensitivity diagnostic, not a validation against hardware or proof that
+any particular monitor works. The fine run is still noise-free and the simulator's
+physical calibration is unresolved.
+
+## Research direction
+
+The strongest next paper is likely a carefully validated evaluation study, not a
+claim of successful evasion or a new defense. First establish a calibrated and
+numerically converged simulator/measurement chain; then create independent,
+domain-randomized trajectory groups; freeze leakage-resistant splits and threshold
+selection; and compare supervised and nominal-only detectors on matched telemetry.
+Only after those gates pass should the project map adaptive attack regions. The
+current feature set contains a synthetic QBER proxy and no validated protocol-level
+impact measure, so classifier evasion must not be described as a QKD security break.
+See [the rebuild decision and research gates](reports/rebuild_decision.md).
+
 ## Evaluation interpretation
 
 - **Split A:** random grouped train/test assignment. Grouping keeps a trajectory's
@@ -171,8 +206,8 @@ Copy any results you need to preserve before rerunning them.
 
 ## Open work
 
-Before drawing broader conclusions, the benchmark needs disjoint splits and
-stochastic measurement/phase noise; model metrics need regeneration with
+Before drawing broader conclusions, the benchmark needs independent trajectories
+and physically calibrated stochastic measurement/phase noise; model metrics need regeneration with
 trajectory-level uncertainty; drift response and held-out drift-hardening need
 evaluation; and PIAD needs a calibrated threshold, matched-input baselines, and
 noise/bandwidth testing. The attack study needs a dense parameter sweep and an

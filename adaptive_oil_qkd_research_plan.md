@@ -1,5 +1,13 @@
 # Research Plan: Adaptive Evasion of ML Monitoring in Twin-Field QKD
 
+> **Status: superseded planning document.** The code/data audit found deterministic
+> nominal traces, duplicate leakage across saved splits, strong sampling sensitivity
+> in the residual diagnostic, and an unvalidated TWIRL input. Do not execute the
+> adaptive-evasion phases below until the validation gates in
+> [reports/rebuild_decision.md](reports/rebuild_decision.md) are met. The current
+> repository does not yet substantiate the threat model or impact objective stated
+> in this original plan.
+
 ## Working title
 
 **When Eve Plays the Model: Mapping the Adaptive-Evasion Frontier of ML Monitoring for Optical-Injection-Locked Twin-Field QKD**
