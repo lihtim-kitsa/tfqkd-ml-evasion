@@ -6,6 +6,9 @@ classifiers respond to simulated operating-parameter drift, searches over two
 simulated reference-beam manipulations, and evaluates a residual from a nominal
 Lang-Kobayashi phase model.
 
+For a concise, application-facing description of the engineering work and its
+limits, see [CERN_APPLICATION_PROJECT.md](CERN_APPLICATION_PROJECT.md).
+
 ## Research status and limits
 
 > **Research prototype; results are exploratory.** The reported tables and figures
